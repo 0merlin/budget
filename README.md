@@ -2,7 +2,9 @@
 
 This app will allow you to record expenses from day to day.
 
-It should work fine on most devices, and with most currencies, just not on some screens the currency is hard coded.
+It should work fine on most devices.
+
+Currently the app only uses ZAR as the currency, I will try make this more universal in time.
 
 ## Current Features:
 
