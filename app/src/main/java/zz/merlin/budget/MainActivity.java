@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.actions.NoteIntents;
 import com.google.gson.JsonArray;
 
 import java.io.File;
@@ -29,6 +31,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import faranjit.currency.edittext.CurrencyEditText;
 import zz.merlin.budget.data.Data;
@@ -48,6 +51,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        if (NoteIntents.ACTION_CREATE_NOTE.equals(intent.getAction())) {
+            String name = "";
+            String text = "";
+            if (intent.hasExtra(NoteIntents.EXTRA_NAME)) {
+                name = intent.getStringExtra(NoteIntents.EXTRA_NAME);
+            }
+            if (intent.hasExtra(NoteIntents.EXTRA_TEXT)) {
+                text = intent.getStringExtra(NoteIntents.EXTRA_TEXT);
+            }
+
+            Toast.makeText(this, name + " -> " + text, Toast.LENGTH_LONG).show();
+        }
+
 
         spent = (CurrencyEditText) findViewById(R.id.edit_currency);
         clear = (ImageButton) findViewById(R.id.btn_clear);
@@ -160,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        Log.e("blah", ""+grantResults[0]);
-        Log.e("blah", ""+PackageManager.PERMISSION_GRANTED);
+        Log.e("blah", "" + grantResults[0]);
+        Log.e("blah", "" + PackageManager.PERMISSION_GRANTED);
         if (requestCode == 1 && (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED)) {
             Toast.makeText(this, "Backup will be disabled", Toast.LENGTH_LONG).show();
             enableBackup = false;
@@ -188,6 +205,17 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.goto_transactions:
                 startActivity(new Intent(this, TransactionsActivity.class));
+                return true;
+            case R.id.backup:
+                if (enableBackup)
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            doBackup();
+                        }
+                    }).start();
+                else
+                    Toast.makeText(this, "You disabled backup, try restarting the app to try again", Toast.LENGTH_LONG).show();
                 return true;
             case R.id.export:
                 if (enableBackup)
@@ -224,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    public void doExport() {
+    public void doBackup() {
 
         ArrayList<Transaction> transactions = new Data(this).getTransactionsAfter(0);
         File path = Environment.getExternalStorageDirectory();
@@ -236,6 +264,43 @@ public class MainActivity extends AppCompatActivity {
             JsonArray array = new JsonArray();
             for (Transaction transaction : transactions) array.add(transaction.json());
             stream.write(array.toString().getBytes());
+            stream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stream != null) stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), "File written: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void doExport() {
+
+        ArrayList<Transaction> transactions = new Data(this).getTransactionsAfter(0);
+        File path = Environment.getExternalStorageDirectory();
+
+        final File file = new File(path, "budget-" + Shared.date_full.format(new Date()) + ".csv");
+        FileOutputStream stream = null;
+        try {
+            stream = new FileOutputStream(file, false);
+            for (Transaction transaction : transactions) {
+                String sb = String.format(Locale.ENGLISH,
+                        "%s,%f,%s,\"%s\"\n",
+                        Shared.date_full.format(transaction.date),
+                        transaction.value,
+                        transaction.category.name,
+                        transaction.comment.replaceAll("\"", "").replaceAll("\n", ""));
+                stream.write(sb.getBytes());
+            }
+            stream.flush();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

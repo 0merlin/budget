@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import zz.merlin.budget.data.Data;
 import zz.merlin.budget.data.Shared;
+import zz.merlin.budget.widgets.Helper;
 
 public class ExtraActivity extends AppCompatActivity {
 
@@ -37,6 +38,7 @@ public class ExtraActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new Data(getApplicationContext()).insertMessage(spent, category, extra.getText().toString());
+                Helper.updateMyWidgets(getApplicationContext());
                 startActivity(new Intent(getApplicationContext(), MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY));
             }
         });

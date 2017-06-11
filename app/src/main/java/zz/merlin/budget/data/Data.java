@@ -146,4 +146,26 @@ public class Data extends SQLiteOpenHelper {
         getWritableDatabase().insert(CATEGORY_TABLE, null, contentValues);
         return true;
     }
+
+    public double spentFrom(long timeInMillis) {
+        ArrayList<Transaction> array_list = new ArrayList<>();
+
+        //hp = new HashMap();
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor res = db.rawQuery(
+                "SELECT SUM(t.value) " +
+                        "FROM " + TRANSACTIONS_TABLE + " as t " +
+                        "WHERE t.transaction_date >= ? ",
+                new String[]{Long.toString(timeInMillis)});
+        res.moveToFirst();
+        double x = 0;
+
+        while (!res.isAfterLast()) {
+            x = res.getDouble(0);
+            res.moveToNext();
+        }
+        res.close();
+        return x;
+    }
 }

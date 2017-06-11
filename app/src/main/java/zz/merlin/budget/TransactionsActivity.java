@@ -28,12 +28,7 @@ public class TransactionsActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.DAY_OF_MONTH, 1);
-                cal.set(Calendar.HOUR_OF_DAY, 0);
-                cal.set(Calendar.MINUTE, 0);
-                cal.set(Calendar.SECOND, 0);
-                transactionsList = new Data(getApplicationContext()).getTransactionsAfter(cal.getTimeInMillis());
+                transactionsList = new Data(getApplicationContext()).getTransactionsAfter(Shared.monthStart());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

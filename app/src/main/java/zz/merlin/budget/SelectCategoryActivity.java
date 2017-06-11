@@ -117,7 +117,6 @@ public class SelectCategoryActivity extends AppCompatActivity {
     }
 
     private void getNewName() {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Enter new category name");
 
@@ -128,9 +127,9 @@ public class SelectCategoryActivity extends AppCompatActivity {
         builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String text = input.getText().toString();
+                String text = input.getText().toString().replaceAll("[^a-zA-Z0-9 _-]", "");
                 if (text.length() < 3) {
-                    Toast.makeText(getApplicationContext(), "Category name too short", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Category name too short, or it uses invalid characters", Toast.LENGTH_LONG).show();
                     return;
                 }
                 for (Category category : categories) {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">As-If</string>
+    <string name="app_name">Budget</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -31,4 +31,8 @@
     <string name="spend_history">Spend History</string>
     <string name="transactions">Transactions</string>
     <string name="export">Export</string>
+    <string name="backup">Backup</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="spent_widget">Spent: %s</string>
 </resources>

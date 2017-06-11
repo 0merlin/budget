@@ -17,7 +17,7 @@
             android:label="@string/app_name" />
         <activity
             android:name=".MainActivity"
-            android:label="Enter Spend">
+            android:label="Expenses">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,6 +56,46 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="zz.merlin.budget.MainActivity" />
         </activity>
+        <activity android:name=".TestActivity">
+            <intent-filter>
+                <action android:name="com.google.android.gms.actions.CREATE_NOTE" />
+
+                <category android:name="com.google.android.voicesearch.SELF_NOTE" />
+
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".widgets.SpentMonthWidget"
+            android:label="Spent for Month">
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_ON" />
+                <action android:name="android.intent.action.ACTION_SCREEN_ON" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/spent_month_widget_info" />
+        </receiver>
+        <receiver
+            android:name=".widgets.MonthSummaryWidget"
+            android:label="Month Summary">
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_ON" />
+                <action android:name="android.intent.action.ACTION_SCREEN_ON" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/month_summary_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

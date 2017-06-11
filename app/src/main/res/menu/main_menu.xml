@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_notebook"
         android:title="@string/export"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/backup"
+        android:icon="@drawable/ic_archive"
+        android:title="@string/backup"
+        app:showAsAction="never" />
 </menu>
