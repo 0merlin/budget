@@ -39,17 +39,17 @@ Currently the app only uses ZAR as the currency, I will try make this more unive
 
 Note that some of the screen are still in the process of being polished.
 
-![Home Screen](main.png =100x)
+![Home Screen](main.png)
 
-![Value in Home screen](value.png =100x)
+![Value in Home screen](value.png)
 
-![Category Listing](category.png =100x)
+![Category Listing](category.png)
 
-![Menu on Home Screen](menu.png =100x)
+![Menu on Home Screen](menu.png)
 
-![Summary Screen](summary.png =100x)
+![Summary Screen](summary.png)
 
-![Transaction Log](transaction_log.png =100x)
+![Transaction Log](transaction_log.png)
 
 
 ## Icons come from:
