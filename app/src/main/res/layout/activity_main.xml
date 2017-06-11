@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp">
+
+
+        <faranjit.currency.edittext.CurrencyEditText
+            android:id="@+id/edit_currency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:focusable="false"
+            android:gravity="center_horizontal"
+            android:hint="@string/spent"
+            android:inputType="numberDecimal"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="50sp"
+            app:groupDivider=","
+            app:locale="en_ZA"
+            app:monetaryDivider="."
+            app:showSymbol="true" />
+
+        <ImageButton
+            android:id="@+id/btn_clear"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/button_circle"
+            android:contentDescription="@string/clear_text"
+            android:src="@drawable/ic_clear"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/white"
+        android:divider="@drawable/keyboard_divider"
+        android:orientation="vertical"
+        android:showDividers="beginning|middle|end">
+
+        <TableRow style="@style/keyboard_row">
+
+            <Button
+                android:id="@+id/key_1"
+                style="@style/keyboard_button"
+                android:text="@string/number_1" />
+
+            <Button
+                android:id="@+id/key_2"
+                style="@style/keyboard_button"
+                android:text="@string/number_2" />
+
+            <Button
+                android:id="@+id/key_3"
+                style="@style/keyboard_button"
+                android:text="@string/number_3" />
+        </TableRow>
+
+        <TableRow style="@style/keyboard_row">
+
+            <Button
+                android:id="@+id/key_4"
+                style="@style/keyboard_button"
+                android:text="@string/number_4" />
+
+            <Button
+                android:id="@+id/key_5"
+                style="@style/keyboard_button"
+                android:text="@string/number_5" />
+
+            <Button
+                android:id="@+id/key_6"
+                style="@style/keyboard_button"
+                android:text="@string/number_6" />
+        </TableRow>
+
+        <TableRow style="@style/keyboard_row">
+
+            <Button
+                android:id="@+id/key_7"
+                style="@style/keyboard_button"
+                android:text="@string/number_7" />
+
+            <Button
+                android:id="@+id/key_8"
+                style="@style/keyboard_button"
+                android:text="@string/number_8" />
+
+            <Button
+                android:id="@+id/key_9"
+                style="@style/keyboard_button"
+                android:text="@string/number_9" />
+        </TableRow>
+
+        <TableRow style="@style/keyboard_row">
+
+            <Button
+                android:id="@+id/key_0"
+                style="@style/keyboard_button"
+                android:text="@string/number_0" />
+
+            <Button
+                android:id="@+id/key_00"
+                style="@style/keyboard_button"
+                android:text="@string/number_00" />
+
+            <Button
+                android:id="@+id/key_done"
+                style="@style/keyboard_button"
+                android:enabled="false"
+                android:text="@string/next" />
+        </TableRow>
+    </TableLayout>
+
+</RelativeLayout>

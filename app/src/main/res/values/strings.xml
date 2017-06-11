@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">As-If</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_field_required">This field is required</string>
+
+    <string name="spent">Spent</string>
+    <string name="no_transactions">No transactions available, spend some money</string>
+    <string name="extra_info">Extra information about spend</string>
+    <string name="complete">Complete</string>
+    <string name="clear_text">Clear Text</string>
+    <string name="number_1">1</string>
+    <string name="number_2">2</string>
+    <string name="number_3">3</string>
+    <string name="number_4">4</string>
+    <string name="number_5">5</string>
+    <string name="number_6">6</string>
+    <string name="number_7">7</string>
+    <string name="number_8">8</string>
+    <string name="number_9">9</string>
+    <string name="number_0">0</string>
+    <string name="number_00">00</string>
+    <string name="next">Next</string>
+    <string name="add_category">Add Category</string>
+    <string name="spend_history">Spend History</string>
+    <string name="transactions">Transactions</string>
+    <string name="export">Export</string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/goto_budget"
+        android:icon="@drawable/ic_pie_chart"
+        android:title="@string/spend_history"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/goto_transactions"
+        android:icon="@drawable/ic_note"
+        android:title="@string/transactions"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/export"
+        android:icon="@drawable/ic_notebook"
+        android:title="@string/export"
+        app:showAsAction="never" />
+</menu>
