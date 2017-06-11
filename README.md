@@ -11,7 +11,7 @@ It should work fine on most devices, and with most currencies, just not on some 
 * Add notes on any expense
 * View the expense from the 1st of this month
 * View a summary of this month's expenses
-* Export all data to JSON
+* Export all data to JSON (which is almost a mirror of the internal DB)
 
 ## Permissions Required:
 
