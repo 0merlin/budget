@@ -21,6 +21,8 @@ Currently the app only uses ZAR as the currency, I will try make this more unive
 * The ability to use Google Now to add a expense:
   * `Ok Google, take a note spent <value without currency> on <category>`
   * An example: `Ok Google, take a note spent 50 on food`
+* Editing your categories
+* Manually enter expenses
 
 ## Permissions Required:
 
@@ -68,3 +70,7 @@ Note that some of the screen are still in the process of being polished.
 
 * designed by Madebyoliver from Flaticon <http://www.flaticon.com/packs/essential-set-2>
 * designed by Iconnice from Flaticon <http://www.flaticon.com/packs/the-ultimate>
+* designed by Freepik from Flaticon <http://www.flaticon.com/packs/electronic-and-web-element-collection--2>
+* designed by Robin from Flaticon <http://www.flaticon.com/packs/circled-vol1 Kylander>
+* designed by Freepik from Flaticon <http://www.flaticon.com/packs/lifestyle-icons >
+* designed by Freepik from Flaticon <http://www.flaticon.com/packs/communication-and-media>
