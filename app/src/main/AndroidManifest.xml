@@ -96,6 +96,16 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/month_summary_widget_info" />
         </receiver>
+
+        <activity
+            android:name=".AddPastActivity"
+            android:label="Add Custom Expense"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="zz.merlin.budget.MainActivity" />
+        </activity>
+        <activity android:name=".CategoryActivity"></activity>
     </application>
 
 </manifest>

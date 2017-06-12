@@ -206,6 +206,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.goto_transactions:
                 startActivity(new Intent(this, TransactionsActivity.class));
                 return true;
+            case R.id.goto_manual:
+                startActivity(new Intent(this, AddPastActivity.class));
+                return true;
+            case R.id.goto_categories:
+                startActivity(new Intent(this, CategoryActivity.class));
+                return true;
             case R.id.backup:
                 if (enableBackup)
                     new Thread(new Runnable() {

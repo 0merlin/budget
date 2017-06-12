@@ -35,4 +35,22 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="spent_widget">Spent: %s</string>
+    <string name="manual_entry">Manual Entry</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string-array name="locale_settings_titles">
+        <item>South Africa</item>
+        <item>USA</item>
+        <item>United Kingdom</item>
+    </string-array>
+    <string-array name="locale_settings_values">
+        <item>en_ZA</item>
+        <item>en_US</item>
+        <item>en_UK</item>
+    </string-array>
 </resources>

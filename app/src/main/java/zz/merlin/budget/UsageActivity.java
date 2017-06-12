@@ -44,7 +44,7 @@ public class UsageActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                transactionsList = new Data(getApplicationContext()).getAccumulated(Shared.monthStart());
+                transactionsList = new Data(getApplicationContext()).getAccumulated(Shared.lastPayDay());
                 List<PieEntry> entries = new ArrayList<>();
 
                 for (Transaction data : transactionsList) {

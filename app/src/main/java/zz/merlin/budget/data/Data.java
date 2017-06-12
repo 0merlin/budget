@@ -51,11 +51,15 @@ public class Data extends SQLiteOpenHelper {
     }
 
     public boolean insertMessage(double value, int category, String comment) {
+        return insertMessage(value, category, comment, new Date().getTime());
+    }
+
+    public boolean insertMessage(double value, int category, String comment, long time) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(TRANSACTIONS_COLUMN_VALUE, value);
         contentValues.put(TRANSACTIONS_COLUMN_CATEGORY, category);
         contentValues.put(TRANSACTIONS_COLUMN_COMMENT, comment);
-        contentValues.put(TRANSACTIONS_COLUMN_DATE, new Date().getTime());
+        contentValues.put(TRANSACTIONS_COLUMN_DATE, time);
 
         getWritableDatabase().insert(TRANSACTIONS_TABLE, null, contentValues);
         return true;
@@ -148,8 +152,6 @@ public class Data extends SQLiteOpenHelper {
     }
 
     public double spentFrom(long timeInMillis) {
-        ArrayList<Transaction> array_list = new ArrayList<>();
-
         //hp = new HashMap();
         SQLiteDatabase db = getReadableDatabase();
 
@@ -167,5 +169,12 @@ public class Data extends SQLiteOpenHelper {
         }
         res.close();
         return x;
+    }
+
+    public void updateCategory(Category category, String name, int icon) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CATEGORY_COLUMN_ICON, icon);
+        contentValues.put(CATEGORY_COLUMN_NAME, name);
+        getWritableDatabase().update(CATEGORY_TABLE, contentValues, CATEGORY_COLUMN_ID + " = ?", new String[]{String.valueOf(category.id)});
     }
 }

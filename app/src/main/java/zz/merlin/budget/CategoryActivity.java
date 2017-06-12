@@ -1,7 +1,6 @@
 package zz.merlin.budget;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
@@ -24,28 +23,35 @@ import zz.merlin.budget.data.Category;
 import zz.merlin.budget.data.Data;
 import zz.merlin.budget.data.Shared;
 
-public class SelectCategoryActivity extends AppCompatActivity {
+public class CategoryActivity extends AppCompatActivity {
 
     ArrayList<Category> categories;
     GridLayout grid;
 
-    private double spent = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_category);
+        setContentView(R.layout.activity_category);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            spent = extras.getDouble(Shared.SPENT, 0.0);
-        } else {
-            Toast.makeText(this, "Dumb-Ass", Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
         grid = (GridLayout) findViewById(R.id.choice_grid);
         reload();
+    }
+
+    private void reload() {
+        grid.removeAllViews();
+        categories = new Data(this).getCategories();
+        for (final Category category : categories) {
+            Button button = (Button) getLayoutInflater().inflate(R.layout.category, grid, false);
+            button.setText(category.name);
+            button.setCompoundDrawablesWithIntrinsicBounds(0, Shared.icons[category.icon], 0, 0);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getNewName(category);
+                }
+            });
+            grid.addView(button);
+        }
     }
 
     @Override
@@ -59,7 +65,7 @@ public class SelectCategoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add:
-                getNewName();
+                getNewName(null);
                 return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
@@ -69,36 +75,17 @@ public class SelectCategoryActivity extends AppCompatActivity {
         }
     }
 
-    private void next(Category category) {
-        startActivity(new Intent(this, ExtraActivity.class).putExtra(Shared.SPENT, spent).putExtra(Shared.CATEGORY, category.id));
-    }
-
-    private void reload() {
-        grid.removeAllViews();
-        categories = new Data(this).getCategories();
-        for (final Category category : categories) {
-            Button button = (Button) getLayoutInflater().inflate(R.layout.category, grid, false);
-            button.setText(category.name);
-            button.setCompoundDrawablesWithIntrinsicBounds(0, Shared.icons[category.icon], 0, 0);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    next(category);
-                }
-            });
-            grid.addView(button);
-        }
-    }
-
-    private void getNewName() {
+    private void getNewName(final Category category) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Enter new category name");
 
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        builder.setView(input);
         int padding = Shared.dpToPx(this, 8);
         input.setPadding(input.getPaddingLeft() + padding, input.getPaddingTop(), input.getPaddingRight() + padding, input.getPaddingBottom());
-        builder.setView(input);
+        if (category != null)
+            input.setText(category.name);
 
         builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
             @Override
@@ -108,13 +95,14 @@ public class SelectCategoryActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Category name too short, or it uses invalid characters", Toast.LENGTH_LONG).show();
                     return;
                 }
-                for (Category category : categories) {
-                    if (category.name.equalsIgnoreCase(text)) {
-                        Toast.makeText(getApplicationContext(), "Category already exists", Toast.LENGTH_LONG).show();
-                        return;
+                if (category == null || !category.name.equalsIgnoreCase(text))
+                    for (Category category : categories) {
+                        if (category.name.equalsIgnoreCase(text)) {
+                            Toast.makeText(getApplicationContext(), "Category already exists", Toast.LENGTH_LONG).show();
+                            return;
+                        }
                     }
-                }
-                selectIcon(text);
+                selectIcon(category, text);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -127,7 +115,7 @@ public class SelectCategoryActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private void selectIcon(final String name) {
+    private void selectIcon(final Category category, final String name) {
 
         ListAdapter adapter = new ArrayAdapterWithIcon(this, Shared.items, Shared.icons);
 
@@ -135,7 +123,10 @@ public class SelectCategoryActivity extends AppCompatActivity {
                 .setTitle("Select Image")
                 .setAdapter(adapter, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
-                        new Data(getApplicationContext()).createCategory(name, item);
+                        if (category == null)
+                            new Data(getApplicationContext()).createCategory(name, item);
+                        else
+                            new Data(getApplicationContext()).updateCategory(category, name, item);
                         Toast.makeText(getApplicationContext(), "Item Selected: " + item, Toast.LENGTH_SHORT).show();
                         reload();
                     }

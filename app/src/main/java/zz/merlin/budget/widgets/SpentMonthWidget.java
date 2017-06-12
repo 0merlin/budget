@@ -21,7 +21,7 @@ public class SpentMonthWidget extends AppWidgetProvider {
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.spent_month_widget);
-        double spent = new Data(context).spentFrom(Shared.monthStart());
+        double spent = new Data(context).spentFrom(Shared.lastPayDay());
         views.setTextViewText(R.id.appwidget_text, context.getString(R.string.spent_widget, Shared.currency.format(spent)));
 
         // Instruct the widget manager to update the widget
