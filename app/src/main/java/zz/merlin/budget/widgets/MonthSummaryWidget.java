@@ -23,12 +23,12 @@ public class MonthSummaryWidget extends AppWidgetProvider {
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.month_summary_widget);
-        ArrayList<Transaction> transactions = new Data(context).getAccumulated(Shared.lastPayDay());
+        ArrayList<Transaction> transactions = new Data(context).getAccumulated(Shared.monthStart(context));
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < transactions.size(); i++) {
             if (i>0) sb.append("\n");
-            sb.append(transactions.get(i).category.name).append(": ").append(Shared.currency.format(transactions.get(i).value));
+            sb.append(transactions.get(i).category.name).append(": ").append(Shared.currencyFormat(context, transactions.get(i).value));
         }
 
         views.setTextViewText(R.id.appwidget_text, sb.toString());

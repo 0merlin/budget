@@ -44,7 +44,7 @@ public class UsageActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                transactionsList = new Data(getApplicationContext()).getAccumulated(Shared.lastPayDay());
+                transactionsList = new Data(getApplicationContext()).getAccumulated(Shared.monthStart(UsageActivity.this));
                 List<PieEntry> entries = new ArrayList<>();
 
                 for (Transaction data : transactionsList) {
@@ -68,7 +68,7 @@ public class UsageActivity extends AppCompatActivity {
                         for (Transaction transaction : transactionsList) {
                             CardView ll = (CardView) getLayoutInflater().inflate(R.layout.transaction, transactions, false);
                             ((TextView) ll.findViewById(R.id.value)).setText(transaction.category.name);
-                            ((TextView) ll.findViewById(R.id.category)).setText(Shared.currency.format(transaction.value));
+                            ((TextView) ll.findViewById(R.id.category)).setText(Shared.currencyFormat(UsageActivity.this, transaction.value));
                             transactions.addView(ll);
                         }
                         chart.setData(data);

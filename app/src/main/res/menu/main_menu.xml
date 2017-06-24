@@ -27,4 +27,8 @@
         android:id="@+id/goto_categories"
         android:title="Manage Categories"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/goto_settings"
+        android:title="Settings"
+        app:showAsAction="never" />
 </menu>

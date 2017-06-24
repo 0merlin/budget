@@ -8,18 +8,17 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.actions.NoteIntents;
@@ -30,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     CurrencyEditText spent;
     ImageButton clear;
     Button done;
+    TextView available;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         spent = (CurrencyEditText) findViewById(R.id.edit_currency);
         clear = (ImageButton) findViewById(R.id.btn_clear);
         done = (Button) findViewById(R.id.key_done);
+        available = (TextView) findViewById(R.id.available);
         findViewById(R.id.key_1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,15 +172,48 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        spent.setLocale(Shared.getSavedLocale(this));
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                double spent = new Data(MainActivity.this).spentFrom(Shared.monthStart(MainActivity.this));
+                Calendar start = Calendar.getInstance();
+                int now = start.get(Calendar.DAY_OF_YEAR);
+                start.setTimeInMillis(Shared.monthEnd(MainActivity.this));
+                int monthAhead = start.get(Calendar.DAY_OF_YEAR);
+
+                int d;
+
+                if (now < monthAhead) d = monthAhead - now;
+                else d = monthAhead + (start.getMaximum(Calendar.DAY_OF_YEAR) - now);
+                if (d < 1) d = 1;
+                double spendable = Shared.get(MainActivity.this, Shared.SAVED_SPEND, 0.0f);
+
+                final double able = spendable - spent;
+                final double fin = able / d;
+                final int fd = d;
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        available.setText(String.format(Locale.ENGLISH, "%s = %s / %d day%s",
+                                Shared.currencyFormat(MainActivity.this, fin),
+                                Shared.currencyFormat(MainActivity.this, able),
+                                fd,
+                                fd > 1 ? "s" : ""));
+                    }
+                });
+
+            }
+        }).start();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        Log.e("blah", "" + grantResults[0]);
-        Log.e("blah", "" + PackageManager.PERMISSION_GRANTED);
         if (requestCode == 1 && (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED)) {
             Toast.makeText(this, "Backup will be disabled", Toast.LENGTH_LONG).show();
             enableBackup = false;
@@ -211,6 +246,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.goto_categories:
                 startActivity(new Intent(this, CategoryActivity.class));
+                return true;
+            case R.id.goto_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             case R.id.backup:
                 if (enableBackup)

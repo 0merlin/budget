@@ -28,7 +28,7 @@ public class TransactionsActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                transactionsList = new Data(getApplicationContext()).getTransactionsAfter(Shared.lastPayDay());
+                transactionsList = new Data(getApplicationContext()).getTransactionsAfter(Shared.monthStart(TransactionsActivity.this));
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -50,7 +50,7 @@ public class TransactionsActivity extends AppCompatActivity {
                             CardView ll = (CardView) getLayoutInflater().inflate(R.layout.transaction, transactions, false);
                             ((ImageView) ll.findViewById(R.id.image)).setImageDrawable(getDrawable(Shared.icons[transaction.category.icon]));
                             ((TextView) ll.findViewById(R.id.date)).setText(Shared.time.format(transaction.date));
-                            ((TextView) ll.findViewById(R.id.value)).setText(Shared.currency.format(transaction.value));
+                            ((TextView) ll.findViewById(R.id.value)).setText(Shared.currencyFormat(TransactionsActivity.this, transaction.value));
                             ((TextView) ll.findViewById(R.id.category)).setText(transaction.category.name);
                             TextView c = (TextView) ll.findViewById(R.id.comment);
                             if (!transaction.comment.isEmpty()) {

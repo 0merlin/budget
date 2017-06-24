@@ -53,4 +53,9 @@
         <item>en_US</item>
         <item>en_UK</item>
     </string-array>
+    <string-array name="month_start">
+        <item>1</item>
+        <item>15</item>
+        <item>25</item>
+    </string-array>
 </resources>

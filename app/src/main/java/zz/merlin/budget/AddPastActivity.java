@@ -47,6 +47,7 @@ public class AddPastActivity extends AppCompatActivity {
             items[i] = categories.get(i).name;
             icons[i] = Shared.icons[categories.get(i).icon];
         }
+        spend.setLocale(Shared.getSavedLocale(this));
 
         spinner.setAdapter(new ArrayAdapterWithIcon(this, items, icons));
 
@@ -65,6 +66,7 @@ public class AddPastActivity extends AppCompatActivity {
             s = spend.getCurrencyDouble();
         } catch (ParseException | NumberFormatException e) {
             spend.setError("This is required");
+            Toast.makeText(this, "Amount is required", Toast.LENGTH_LONG);
             return;
         }
         String text = extra.getText().toString();
@@ -78,7 +80,9 @@ public class AddPastActivity extends AppCompatActivity {
 
         if (when.getTimeInMillis() > System.currentTimeMillis())
             Toast.makeText(this, "Cannot set time in the future", Toast.LENGTH_LONG).show();
-        else
+        else {
             new Data(this).insertMessage(s, category, text, when.getTimeInMillis());
+            finish();
+        }
     }
 }

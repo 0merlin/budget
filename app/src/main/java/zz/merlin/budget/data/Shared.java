@@ -1,45 +1,71 @@
 package zz.merlin.budget.data;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
 import zz.merlin.budget.R;
 
+@SuppressWarnings("unused")
 public class Shared {
     public static final String SPENT = "spent";
     public static final String CATEGORY = "category";
+    public static final String SAVED_LOCALE = "locale";
+    public static final String SAVED_SPEND = "spend";
+    public static final String SAVED_MONTH_START = "month_start";
+
+    private static final String PREFERENCE_FILE = "budget_preferences";
+
     public static final SimpleDateFormat date_full = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss", Locale.ENGLISH);
-    public static final DecimalFormat currency = new DecimalFormat("R #.##");
     public static final SimpleDateFormat date = new SimpleDateFormat("EEEE dd MMMM", Locale.ENGLISH);
     public static final SimpleDateFormat time = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 
-    public static long monthStart() {
+    public static long monthStart(Context context) {
+        int d = getStartDay(context);
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
+        if (cal.get(Calendar.DAY_OF_MONTH) > d) {
+            cal.set(Calendar.DAY_OF_MONTH, d);
+        } else {
+            int m = cal.get(Calendar.MONTH);
+            if (m > 1)
+                cal.set(Calendar.MONTH, m - 1);
+            else {
+                cal.set(Calendar.MONTH, 12);
+                cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 1);
+            }
+            cal.set(Calendar.DAY_OF_MONTH, d);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+        }
         return cal.getTimeInMillis();
     }
 
-    public static long lastPayDay() {
+    public static long monthEnd(Context context) {
+        int d = getStartDay(context);
         Calendar cal = Calendar.getInstance();
-        int m = cal.get(Calendar.MONTH);
-        if (m > 1)
-            cal.set(Calendar.MONTH, m - 1);
-        else {
-            cal.set(Calendar.MONTH, 12);
-            cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 1);
+        if (cal.get(Calendar.DAY_OF_MONTH) < d) {
+            cal.set(Calendar.DAY_OF_MONTH, d);
+        } else {
+            int m = cal.get(Calendar.MONTH);
+            if (m < 12)
+                cal.set(Calendar.MONTH, m + 1);
+            else {
+                cal.set(Calendar.MONTH, 1);
+                cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
+            }
+            cal.set(Calendar.DAY_OF_MONTH, d);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
         }
-        cal.set(Calendar.DAY_OF_MONTH, 25);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
         return cal.getTimeInMillis();
     }
 
@@ -135,12 +161,49 @@ public class Shared {
             "Video Camera",
             "Woman"
     };
+
     public static int dpToPx(Context context, int dp) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
+
     public static int pxToDp(Context context, int px) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
+    public static String[] supportedLocales = new String[]{
+            "en-GB",
+            "en-US",
+            "en-ZA"
+    };
+
+    public static void set(Context context, String key, float value) {
+        context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE).edit().putFloat(key, value).apply();
+    }
+
+    public static void set(Context context, String key, String value) {
+        context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE).edit().putString(key, value).apply();
+
+    }
+
+    public static float get(Context context, String key, float def) {
+        return context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE).getFloat(key, def);
+    }
+
+    public static String get(Context context, String key, String def) {
+        return context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE).getString(key, def);
+    }
+
+    public static Locale getSavedLocale(Context context) {
+        return Locale.forLanguageTag(Shared.get(context, Shared.SAVED_LOCALE, Shared.supportedLocales[0]));
+    }
+
+    public static int getStartDay(Context context) {
+        return Integer.parseInt(Shared.get(context, Shared.SAVED_MONTH_START, "1"));
+    }
+
+    public static String currencyFormat(Context context, double amount) {
+        return NumberFormat.getCurrencyInstance(getSavedLocale(context)).format(amount);
     }
 }
