@@ -10,7 +10,7 @@ import zz.merlin.budget.data.Data;
 import zz.merlin.budget.data.Shared;
 
 /**
- * Implementation of App Widget functionality.
+ * A quick monthly summary widget.
  */
 public class SpentMonthWidget extends AppWidgetProvider {
 

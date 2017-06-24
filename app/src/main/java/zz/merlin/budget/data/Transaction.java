@@ -4,6 +4,9 @@ import com.google.gson.JsonObject;
 
 import java.util.Date;
 
+/**
+ * Transaction data type, as is stored in DB.
+ */
 public class Transaction {
     public int id;
     public double value;

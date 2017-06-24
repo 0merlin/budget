@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+/**
+ * This should be self explanatory, this allows for a basic text list but with a image on the side.
+ */
 public class ArrayAdapterWithIcon extends ArrayAdapter<String> {
 
     private int[] images;
-
 
     public ArrayAdapterWithIcon(Context context, String[] items, int[] images) {
         super(context, android.R.layout.select_dialog_item, items);

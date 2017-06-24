@@ -82,7 +82,7 @@ public class AddPastActivity extends AppCompatActivity {
         if (when.getTimeInMillis() > System.currentTimeMillis())
             Toast.makeText(this, "Cannot set time in the future", Toast.LENGTH_LONG).show();
         else {
-            new Data(this).insertMessage(s, category, text, when.getTimeInMillis());
+            new Data(this).createTransaction(s, category, text, when.getTimeInMillis());
             finish();
         }
     }

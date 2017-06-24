@@ -32,7 +32,7 @@ public class GoogleVoiceInputActivity extends AppCompatActivity {
                         ArrayList<Category> categories = new Data(this).getCategories();
                         for (Category category : categories) {
                             if (category.name.equalsIgnoreCase(rawCategory)) {
-                                new Data(this).insertMessage(value, category.id, "");
+                                new Data(this).createTransaction(value, category.id, "");
                                 Toast.makeText(this, "Expense captured", Toast.LENGTH_LONG).show();
                                 startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                                 finish();

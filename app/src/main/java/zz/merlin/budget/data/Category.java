@@ -2,6 +2,9 @@ package zz.merlin.budget.data;
 
 import com.google.gson.JsonObject;
 
+/**
+ * Category data type, as is stored in DB.
+ */
 public class Category {
     public int id;
     public int icon;

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.widget.RemoteViews;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import zz.merlin.budget.R;
 import zz.merlin.budget.data.Data;
@@ -14,7 +13,7 @@ import zz.merlin.budget.data.Shared;
 import zz.merlin.budget.data.Transaction;
 
 /**
- * Implementation of App Widget functionality.
+ * A quick monthly summary per category widget.
  */
 public class MonthSummaryWidget extends AppWidgetProvider {
 
@@ -23,11 +22,11 @@ public class MonthSummaryWidget extends AppWidgetProvider {
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.month_summary_widget);
-        ArrayList<Transaction> transactions = new Data(context).getAccumulated(Shared.monthStart(context));
+        ArrayList<Transaction> transactions = new Data(context).getSummaryTransactions(Shared.monthStart(context));
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < transactions.size(); i++) {
-            if (i>0) sb.append("\n");
+            if (i > 0) sb.append("\n");
             sb.append(transactions.get(i).category.name).append(": ").append(Shared.currencyFormat(context, transactions.get(i).value));
         }
 

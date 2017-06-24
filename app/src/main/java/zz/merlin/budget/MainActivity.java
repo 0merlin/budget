@@ -215,6 +215,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Whether the next button should be set visible or not.
+     *
+     * @param visible Visibility?
+     */
     private void setNextVisible(boolean visible) {
         clear.setVisibility(visible ? View.VISIBLE : View.GONE);
         done.setEnabled(visible);
@@ -272,6 +277,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Second step of creating a transaction.
+     */
     private void chooseType() {
         double value;
         if (spent.getText().toString().isEmpty()) {
@@ -291,6 +299,10 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
+    /**
+     * Create a JSON backup file on the SD card. Currently only stores the transactions,
+     * and not the application settings.
+     */
     public void doBackup() {
 
         ArrayList<Transaction> transactions = new Data(this).getTransactionsAfter(0);
@@ -321,8 +333,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Run the default export functionality.
+     */
     public void doExport() {
-
         ArrayList<Transaction> transactions = new Data(this).getTransactionsAfter(0);
         File path = Environment.getExternalStorageDirectory();
 

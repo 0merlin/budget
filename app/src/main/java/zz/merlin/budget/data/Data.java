@@ -50,11 +50,26 @@ public class Data extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertMessage(double value, int category, String comment) {
-        return insertMessage(value, category, comment, new Date().getTime());
+    /**
+     * Create a new transaction, using Now() as the time.
+     *
+     * @param value    The value of the transaction.
+     * @param category The category type of the transaction.
+     * @param comment  An optional comment on the transaction.
+     */
+    public void createTransaction(double value, int category, String comment) {
+        createTransaction(value, category, comment, new Date().getTime());
     }
 
-    public boolean insertMessage(double value, int category, String comment, long time) {
+    /**
+     * Create a new transaction, using Now() as the time.
+     *
+     * @param value    The value of the transaction.
+     * @param category The category type of the transaction.
+     * @param comment  An optional comment on the transaction.
+     * @param time     The time at which the transaction occurred.
+     */
+    public void createTransaction(double value, int category, String comment, long time) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(TRANSACTIONS_COLUMN_VALUE, value);
         contentValues.put(TRANSACTIONS_COLUMN_CATEGORY, category);
@@ -62,9 +77,14 @@ public class Data extends SQLiteOpenHelper {
         contentValues.put(TRANSACTIONS_COLUMN_DATE, time);
 
         getWritableDatabase().insert(TRANSACTIONS_TABLE, null, contentValues);
-        return true;
     }
 
+    /**
+     * Get all transaction after the provided time.
+     *
+     * @param timeInMillis Time to check for.
+     * @return The list of transaction.
+     */
     public ArrayList<Transaction> getTransactionsAfter(long timeInMillis) {
         ArrayList<Transaction> array_list = new ArrayList<>();
 
@@ -89,10 +109,17 @@ public class Data extends SQLiteOpenHelper {
             res.moveToNext();
         }
         res.close();
+        db.close();
         return array_list;
     }
 
-    public ArrayList<Transaction> getAccumulated(long timeInMillis) {
+    /**
+     * Get a summary of the transactions after the given time.
+     *
+     * @param timeInMillis Time to check for.
+     * @return The list of summarised transactions.
+     */
+    public ArrayList<Transaction> getSummaryTransactions(long timeInMillis) {
         ArrayList<Transaction> array_list = new ArrayList<>();
 
         //hp = new HashMap();
@@ -118,13 +145,18 @@ public class Data extends SQLiteOpenHelper {
             res.moveToNext();
         }
         res.close();
+        db.close();
         return array_list;
     }
 
+    /**
+     * Fetch all categories.
+     *
+     * @return The list of categories.
+     */
     public ArrayList<Category> getCategories() {
         ArrayList<Category> array_list = new ArrayList<>();
 
-        //hp = new HashMap();
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor res = db.rawQuery(
@@ -139,20 +171,32 @@ public class Data extends SQLiteOpenHelper {
             res.moveToNext();
         }
         res.close();
+
+        db.close();
         return array_list;
     }
 
-    public boolean createCategory(String name, int item) {
+    /**
+     * Create a new category.
+     *
+     * @param name Cateoory name.
+     * @param item Category image.
+     */
+    public void createCategory(String name, int item) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(CATEGORY_COLUMN_ICON, item);
         contentValues.put(CATEGORY_COLUMN_NAME, name);
 
         getWritableDatabase().insert(CATEGORY_TABLE, null, contentValues);
-        return true;
     }
 
+    /**
+     * Total spent of the given time.
+     *
+     * @param timeInMillis Time to search for.
+     * @return Total spent.
+     */
     public double spentFrom(long timeInMillis) {
-        //hp = new HashMap();
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor res = db.rawQuery(
@@ -168,9 +212,17 @@ public class Data extends SQLiteOpenHelper {
             res.moveToNext();
         }
         res.close();
+        db.close();
         return x;
     }
 
+    /**
+     * Update the given category with the given information.
+     *
+     * @param category Orriginal category.
+     * @param name     New name.
+     * @param icon     New icon.
+     */
     public void updateCategory(Category category, String name, int icon) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(CATEGORY_COLUMN_ICON, icon);
