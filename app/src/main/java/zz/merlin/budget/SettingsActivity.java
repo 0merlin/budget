@@ -5,6 +5,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,6 +36,14 @@ public class SettingsActivity extends AppCompatActivity {
         localeSetting = (Spinner) findViewById(R.id.choose_locale);
         month_spend = (CurrencyEditText) findViewById(R.id.monthly_spend);
         monthDays = getResources().getStringArray(R.array.month_start);
+
+
+        Locale [] locales1 = Locale.getAvailableLocales();
+        for (Locale locale: locales1) {
+            try {
+                Log.e("Locales", locale.toLanguageTag() + " - " + Currency.getInstance(locale).getDisplayName() + " - " + Currency.getInstance(locale).getCurrencyCode());
+            } catch (Exception ignored){}
+        }
 
 
         for (String valid : Shared.supportedLocales) {

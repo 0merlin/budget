@@ -29,5 +29,4 @@ dependencies {
     compile 'com.koushikdutta.ion:ion:2.2.0'
     compile 'com.github.faranjit:currency-edittext:1.0.1'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
