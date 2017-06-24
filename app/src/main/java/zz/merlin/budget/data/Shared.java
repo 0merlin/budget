@@ -1,11 +1,8 @@
 package zz.merlin.budget.data;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,7 +10,7 @@ import java.util.Locale;
 
 import zz.merlin.budget.R;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class Shared {
     public static final String SPENT = "spent";
     public static final String CATEGORY = "category";
@@ -27,10 +24,18 @@ public class Shared {
     public static final SimpleDateFormat date = new SimpleDateFormat("EEEE dd MMMM", Locale.ENGLISH);
     public static final SimpleDateFormat time = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 
+    public static long todayStart() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        return cal.getTimeInMillis();
+    }
+
     public static long monthStart(Context context) {
         int d = getStartDay(context);
         Calendar cal = Calendar.getInstance();
-        if (cal.get(Calendar.DAY_OF_MONTH) > d) {
+        if (cal.get(Calendar.DAY_OF_MONTH) >= d) {
             cal.set(Calendar.DAY_OF_MONTH, d);
         } else {
             int m = cal.get(Calendar.MONTH);
@@ -205,5 +210,17 @@ public class Shared {
 
     public static String currencyFormat(Context context, double amount) {
         return NumberFormat.getCurrencyInstance(getSavedLocale(context)).format(amount);
+    }
+
+    public static int min(int... x) {
+        int m = x[0];
+        for (int i : x) if (i < m) m = i;
+        return m;
+    }
+
+    public static int max(int... x) {
+        int m = x[0];
+        for (int i : x) if (i > m) m = i;
+        return m;
     }
 }

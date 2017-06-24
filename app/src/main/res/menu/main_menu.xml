@@ -25,10 +25,10 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/goto_categories"
-        android:title="Manage Categories"
+        android:title="@string/manage_categories"
         app:showAsAction="never" />
     <item
         android:id="@+id/goto_settings"
-        android:title="Settings"
+        android:title="@string/settings"
         app:showAsAction="never" />
 </menu>

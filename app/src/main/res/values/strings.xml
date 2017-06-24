@@ -1,15 +1,6 @@
 <resources>
     <string name="app_name">Budget</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_field_required">This field is required</string>
-
     <string name="spent">Spent</string>
     <string name="no_transactions">No transactions available, spend some money</string>
     <string name="extra_info">Extra information about spend</string>
@@ -32,27 +23,18 @@
     <string name="transactions">Transactions</string>
     <string name="export">Export</string>
     <string name="backup">Backup</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
     <string name="spent_widget">Spent: %s</string>
     <string name="manual_entry">Manual Entry</string>
-    <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
 
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
+    <string name="category_icon">Category Icon</string>
+    <string name="month_start_day">Month Start Day</string>
+    <string name="budgeted_spend">Budgeted Spend</string>
+    <string name="locale_and_currency">Locale and Currency</string>
+    <string name="manage_categories">Manage Categories</string>
+    <string name="settings">Settings</string>
 
-    <string-array name="locale_settings_titles">
-        <item>South Africa</item>
-        <item>USA</item>
-        <item>United Kingdom</item>
-    </string-array>
-    <string-array name="locale_settings_values">
-        <item>en_ZA</item>
-        <item>en_US</item>
-        <item>en_UK</item>
-    </string-array>
     <string-array name="month_start">
         <item>1</item>
         <item>15</item>

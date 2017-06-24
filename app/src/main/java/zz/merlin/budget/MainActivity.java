@@ -181,21 +181,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 double spent = new Data(MainActivity.this).spentFrom(Shared.monthStart(MainActivity.this));
-                Calendar start = Calendar.getInstance();
-                int now = start.get(Calendar.DAY_OF_YEAR);
-                start.setTimeInMillis(Shared.monthEnd(MainActivity.this));
-                int monthAhead = start.get(Calendar.DAY_OF_YEAR);
+                double todaySpent = new Data(MainActivity.this).spentFrom(Shared.todayStart());
+                Calendar cal = Calendar.getInstance();
+                int now = cal.get(Calendar.DAY_OF_YEAR);
+                cal.setTimeInMillis(Shared.monthEnd(MainActivity.this));
+                int monthAhead = cal.get(Calendar.DAY_OF_YEAR);
 
-                int d;
+                final int d = Shared.max(monthAhead - now + (now > monthAhead ? cal.getMaximum(Calendar.DAY_OF_YEAR) : 0), 1);
 
-                if (now < monthAhead) d = monthAhead - now;
-                else d = monthAhead + (start.getMaximum(Calendar.DAY_OF_YEAR) - now);
-                if (d < 1) d = 1;
-                double spendable = Shared.get(MainActivity.this, Shared.SAVED_SPEND, 0.0f);
-
-                final double able = spendable - spent;
-                final double fin = able / d;
-                final int fd = d;
+                final double able = Shared.get(MainActivity.this, Shared.SAVED_SPEND, 0.0f) - spent + todaySpent;
+                final double fin = able / d - todaySpent;
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -203,8 +198,8 @@ public class MainActivity extends AppCompatActivity {
                         available.setText(String.format(Locale.ENGLISH, "%s = %s / %d day%s",
                                 Shared.currencyFormat(MainActivity.this, fin),
                                 Shared.currencyFormat(MainActivity.this, able),
-                                fd,
-                                fd > 1 ? "s" : ""));
+                                d,
+                                d > 1 ? "s" : ""));
                     }
                 });
 

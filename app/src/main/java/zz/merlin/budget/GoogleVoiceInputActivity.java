@@ -12,12 +12,12 @@ import java.util.ArrayList;
 import zz.merlin.budget.data.Category;
 import zz.merlin.budget.data.Data;
 
-public class TestActivity extends AppCompatActivity {
+public class GoogleVoiceInputActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_google_voice_input);
 
         try {
             Intent intent = getIntent();

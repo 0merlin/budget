@@ -13,7 +13,7 @@ public class Category {
         this.name = name;
     }
 
-    public JsonObject json() {
+    JsonObject json() {
         JsonObject obj = new JsonObject();
         obj.addProperty("id", id);
         obj.addProperty("iconId", icon);

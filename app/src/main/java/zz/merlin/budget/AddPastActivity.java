@@ -76,6 +76,7 @@ public class AddPastActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             when.set(date.getYear(), date.getMonth(), date.getDayOfMonth(), time.getHour(), time.getMinute());
         else
+            //noinspection deprecation
             when.set(date.getYear(), date.getMonth(), date.getDayOfMonth(), time.getCurrentHour(), time.getCurrentMinute());
 
         if (when.getTimeInMillis() > System.currentTimeMillis())

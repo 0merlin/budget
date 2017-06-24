@@ -5,8 +5,6 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.widget.RemoteViews;
 
-import java.util.Calendar;
-
 import zz.merlin.budget.R;
 import zz.merlin.budget.data.Data;
 import zz.merlin.budget.data.Shared;

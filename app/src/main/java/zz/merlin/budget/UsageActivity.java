@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,7 +16,6 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import zz.merlin.budget.data.Data;
@@ -67,8 +67,9 @@ public class UsageActivity extends AppCompatActivity {
                         }
                         for (Transaction transaction : transactionsList) {
                             CardView ll = (CardView) getLayoutInflater().inflate(R.layout.transaction, transactions, false);
-                            ((TextView) ll.findViewById(R.id.value)).setText(transaction.category.name);
-                            ((TextView) ll.findViewById(R.id.category)).setText(Shared.currencyFormat(UsageActivity.this, transaction.value));
+                            ((ImageView) ll.findViewById(R.id.image)).setImageDrawable(getDrawable(Shared.icons[transaction.category.icon]));
+                            ((TextView) ll.findViewById(R.id.date)).setText(transaction.category.name);
+                            ((TextView) ll.findViewById(R.id.value)).setText(Shared.currencyFormat(UsageActivity.this, transaction.value));
                             transactions.addView(ll);
                         }
                         chart.setData(data);

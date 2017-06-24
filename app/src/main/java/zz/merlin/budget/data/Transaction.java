@@ -1,6 +1,5 @@
 package zz.merlin.budget.data;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.Date;

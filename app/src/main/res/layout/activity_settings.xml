@@ -9,7 +9,7 @@
 
         <TextView
             style="@style/Text"
-            android:text="Month Start Day" />
+            android:text="@string/month_start_day" />
 
         <Spinner
             android:id="@+id/choose_month_start"
@@ -21,7 +21,7 @@
         <TextView
             style="@style/Text"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:text="Budgeted Spend" />
+            android:text="@string/budgeted_spend" />
 
         <faranjit.currency.edittext.CurrencyEditText
             android:id="@+id/monthly_spend"
@@ -38,7 +38,7 @@
         <TextView
             style="@style/Text"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:text="Locale and Currency" />
+            android:text="@string/locale_and_currency" />
 
         <Spinner
             android:id="@+id/choose_locale"
