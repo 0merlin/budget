@@ -369,13 +369,6 @@ public class MainActivity extends AppCompatActivity {
                 double dayAvailable = monthAvailable / d;
                 double allowed = dayAvailable - todaySpent;
 
-                Log.e("money", "Month Start : " + Shared.monthStart(MainActivity.this));
-                Log.e("money", "Today Start : " + Shared.todayStart());
-                Log.e("money", "Able : " + monthAvailable);
-                Log.e("money", "Spent : " + spent);
-                Log.e("money", "Today : " + todaySpent);
-                Log.e("money", "Days : " + d);
-
                 final String finalString;
                 final boolean overspent = allowed < 0;
 
