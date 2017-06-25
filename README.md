@@ -4,7 +4,9 @@ This app will allow you to record expenses from day to day.
 
 It should work fine on most devices.
 
-Currently the app only uses ZAR as the currency, I will try make this more universal in time.
+This app can use 3 tested currencies (ZAR, USD, GBP). I plan to add as many more that I can test.
+
+*This app is created by a single person, so bugs will exist. I plan to make that as rare as possible. And I am using this app often, so I normally pickup bugs as I see them, and fix as soon as I can. So if you see any bugs, or would like some features create an issue or a pull request if you wish.*
 
 ## Current Features:
 
