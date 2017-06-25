@@ -159,10 +159,10 @@ public class Shared {
                 cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 1);
             }
             cal.set(Calendar.DAY_OF_MONTH, d);
-            cal.set(Calendar.HOUR_OF_DAY, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
         }
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
         return cal.getTimeInMillis();
     }
 
@@ -186,10 +186,10 @@ public class Shared {
                 cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1);
             }
             cal.set(Calendar.DAY_OF_MONTH, d);
-            cal.set(Calendar.HOUR_OF_DAY, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
         }
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
         return cal.getTimeInMillis();
     }
 
