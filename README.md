@@ -23,6 +23,10 @@ Currently the app only uses ZAR as the currency, I will try make this more unive
   * An example: `Ok Google, take a note spent 50 on food`
 * Editing your categories
 * Manually enter expenses
+* Specifying your currency
+* Specifying a limit for the month
+* Specyfying the start of your month
+* Shows how much you have to spend for the day
 
 ## Permissions Required:
 
@@ -36,35 +40,6 @@ Currently the app only uses ZAR as the currency, I will try make this more unive
 * Compare previous months data to this month for trends
 * Import of backup
 * Backup to E-Mail
-
-## Some Screenshots:
-
-Note that some of the screen are still in the process of being polished.
-
-### Home screen:
-
-![Home Screen](main.png)
-
-### Value in Home screen
-
-![Value in Home screen](value.png)
-
-### Category Listing
-
-![Category Listing](category.png)
-
-### Menu on Home Screen
-
-![Menu on Home Screen](menu.png)
-
-### Summary Screen
-
-![Summary Screen](summary.png)
-
-### Transaction Log
-
-![Transaction Log](transaction_log.png)
-
 
 ## Icons come from:
 
