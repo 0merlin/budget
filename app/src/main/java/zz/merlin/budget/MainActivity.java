@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -176,35 +177,7 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                double spent = new Data(MainActivity.this).spentFrom(Shared.monthStart(MainActivity.this));
-                double todaySpent = new Data(MainActivity.this).spentFrom(Shared.todayStart());
-                Calendar cal = Calendar.getInstance();
-                int now = cal.get(Calendar.DAY_OF_YEAR);
-                cal.setTimeInMillis(Shared.monthEnd(MainActivity.this));
-                int monthAhead = cal.get(Calendar.DAY_OF_YEAR);
-
-                final int d = Shared.max(monthAhead - now + (now > monthAhead ? cal.getMaximum(Calendar.DAY_OF_YEAR) : 0), 1);
-
-                final double able = Shared.get(MainActivity.this, Shared.SAVED_SPEND, 0.0f) - spent + todaySpent;
-                final double fin = able / d - todaySpent;
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        available.setText(String.format(Locale.ENGLISH, "%s = %s / %d day%s",
-                                Shared.currencyFormat(MainActivity.this, fin),
-                                Shared.currencyFormat(MainActivity.this, able),
-                                d,
-                                d > 1 ? "s" : ""));
-                    }
-                });
-
-            }
-        }).start();
+        calculateSpendable();
     }
 
     @Override
@@ -213,6 +186,12 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Backup will be disabled", Toast.LENGTH_LONG).show();
             enableBackup = false;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        calculateSpendable();
     }
 
     /**
@@ -369,5 +348,61 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "File written: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void calculateSpendable() {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                double spent = new Data(MainActivity.this).spentFrom(Shared.monthStart(MainActivity.this));
+                double todaySpent = new Data(MainActivity.this).spentFrom(Shared.todayStart());
+                Calendar cal = Calendar.getInstance();
+                int now = cal.get(Calendar.DAY_OF_YEAR);
+                cal.setTimeInMillis(Shared.monthEnd(MainActivity.this));
+                int monthAhead = cal.get(Calendar.DAY_OF_YEAR);
+
+                int d = Shared.max(monthAhead - now + (now > monthAhead ? cal.getMaximum(Calendar.DAY_OF_YEAR) : 0), 1);
+
+
+                double monthAvailable = Shared.get(MainActivity.this, Shared.SAVED_SPEND, 0.0f) - spent + todaySpent;
+                double dayAvailable = monthAvailable / d;
+                double allowed = dayAvailable - todaySpent;
+
+                Log.e("money", "Month Start : " + Shared.monthStart(MainActivity.this));
+                Log.e("money", "Today Start : " + Shared.todayStart());
+                Log.e("money", "Able : " + monthAvailable);
+                Log.e("money", "Spent : " + spent);
+                Log.e("money", "Today : " + todaySpent);
+                Log.e("money", "Days : " + d);
+
+                final String finalString;
+                final boolean overspent = allowed < 0;
+
+                if (overspent)
+                    finalString = String.format(Locale.ENGLISH, "Over spent by %s [%s / %d day%s = %s]",
+                            Shared.currencyFormat(MainActivity.this, -allowed),
+                            Shared.currencyFormat(MainActivity.this, monthAvailable),
+                            d,
+                            d > 1 ? "s" : "",
+                            Shared.currencyFormat(MainActivity.this, dayAvailable));
+                else
+                    finalString = String.format(Locale.ENGLISH, "%s = [%s / %d day%s - %s]",
+                            Shared.currencyFormat(MainActivity.this, allowed),
+                            Shared.currencyFormat(MainActivity.this, monthAvailable),
+                            d,
+                            d > 1 ? "s" : "",
+                            Shared.currencyFormat(MainActivity.this, todaySpent));
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        available.setText(finalString);
+                        available.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), overspent ? R.color.overspent : R.color.white));
+                    }
+                });
+
+            }
+        }).start();
     }
 }
