@@ -2,6 +2,7 @@ package zz.merlin.budget;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -9,10 +10,10 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,17 +25,24 @@ import android.widget.Toast;
 
 import com.google.android.gms.actions.NoteIntents;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
 import faranjit.currency.edittext.CurrencyEditText;
+import zz.merlin.budget.data.Category;
 import zz.merlin.budget.data.Data;
 import zz.merlin.budget.data.Shared;
 import zz.merlin.budget.data.Transaction;
@@ -251,6 +259,28 @@ public class MainActivity extends AppCompatActivity {
                 else
                     Toast.makeText(this, "You disabled backup, try restarting the app to try again", Toast.LENGTH_LONG).show();
                 return true;
+            case R.id.restore:
+                if (enableBackup) {
+                    new AlertDialog.Builder(this)
+                            .setTitle("Are you sure you want to restore")
+                            .setMessage("Are you very sure you want to restore the latest backup, this will clear the internal database, and restore the latest backup found?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    Toast.makeText(MainActivity.this, "Running import", Toast.LENGTH_LONG).show();
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            doImport();
+                                        }
+                                    }).start();
+                                }})
+                            .setNegativeButton(android.R.string.no, null).show();
+                }
+                else
+                    Toast.makeText(this, "You disabled backup, try restarting the app to try again", Toast.LENGTH_LONG).show();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -285,15 +315,29 @@ public class MainActivity extends AppCompatActivity {
     public void doBackup() {
 
         ArrayList<Transaction> transactions = new Data(this).getTransactionsAfter(0);
+        ArrayList<Category> categories = new Data(this).getCategories();
         File path = Environment.getExternalStorageDirectory();
 
         final File file = new File(path, "budget-" + Shared.date_full.format(new Date()) + ".json");
         FileOutputStream stream = null;
         try {
             stream = new FileOutputStream(file, false);
-            JsonArray array = new JsonArray();
-            for (Transaction transaction : transactions) array.add(transaction.json());
-            stream.write(array.toString().getBytes());
+            JsonObject backup = new JsonObject();
+
+
+            JsonArray jsonTransactions = new JsonArray();
+            for (Transaction transaction : transactions) jsonTransactions.add(transaction.json());
+
+            JsonArray jsonCategories = new JsonArray();
+            for (Category category : categories) jsonCategories.add(category.json());
+
+            backup.add("transactions", jsonTransactions);
+            backup.add("categories", jsonCategories);
+            backup.addProperty("month_start", Shared.getStartDay(this));
+            backup.addProperty("locale", Shared.getSavedLocale(this).toLanguageTag());
+            backup.addProperty("spendable", Shared.getSavedSpend(this));
+
+            stream.write(backup.toString().getBytes());
             stream.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -308,6 +352,72 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Toast.makeText(getApplicationContext(), "File written: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    /**
+     * Find an export that can be imported.
+     */
+    public void doImport() {
+        String path = Environment.getExternalStorageDirectory().toString();
+        File directory = new File(path);
+        File[] files = directory.listFiles();
+        Arrays.sort(files, new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        File chosen = null;
+        for (File file : files) {
+            String name = file.getName();
+            if (name.startsWith("budget-") && name.endsWith(".json"))
+                chosen = file;
+        }
+
+        if (chosen == null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "No backup file found", Toast.LENGTH_LONG).show();
+                }
+            });
+            return;
+        }
+
+        try {
+            FileReader fr = new FileReader(chosen);
+            JsonObject jsonObject = new JsonParser().parse(fr).getAsJsonObject();
+
+            JsonArray categories = jsonObject.getAsJsonArray("categories");
+            JsonArray transactions = jsonObject.getAsJsonArray("transactions");
+
+            Shared.set(this, Shared.SAVED_MONTH_START, String.valueOf(jsonObject.get("month_start").getAsInt()));
+            Shared.set(this, Shared.SAVED_SPEND, jsonObject.get("spendable").getAsFloat());
+            Shared.set(this, Shared.SAVED_LOCALE, jsonObject.get("locale").getAsString());
+
+            Data data = new Data(this);
+            data.resetDatabase();
+
+            for (int i = 0; i < categories.size(); i++) {
+                Category category = new Category(categories.get(i).getAsJsonObject());
+                data.insertCategory(category);
+            }
+            for (int i = 0; i < transactions.size(); i++) {
+                Transaction transaction = new Transaction(transactions.get(i).getAsJsonObject());
+                data.insertTransaction(transaction);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        final File finalChosen = chosen;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), "Backup read from: " + finalChosen.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                calculateSpendable();
             }
         });
     }
@@ -365,7 +475,7 @@ public class MainActivity extends AppCompatActivity {
                 int d = Shared.max(monthAhead - now + (now > monthAhead ? cal.getMaximum(Calendar.DAY_OF_YEAR) : 0), 1);
 
 
-                double monthAvailable = Shared.get(MainActivity.this, Shared.SAVED_SPEND, 0.0f) - spent + todaySpent;
+                double monthAvailable = Shared.getSavedSpend(MainActivity.this) - spent + todaySpent;
                 double dayAvailable = monthAvailable / d;
                 double allowed = dayAvailable - todaySpent;
 

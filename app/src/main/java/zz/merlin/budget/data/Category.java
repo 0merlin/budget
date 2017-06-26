@@ -16,7 +16,11 @@ public class Category {
         this.name = name;
     }
 
-    JsonObject json() {
+    public Category(JsonObject jsonObject) {
+        this(jsonObject.get("id").getAsInt(), jsonObject.get("iconId").getAsInt(), jsonObject.get("name").getAsString());
+    }
+
+    public JsonObject json() {
         JsonObject obj = new JsonObject();
         obj.addProperty("id", id);
         obj.addProperty("iconId", icon);

@@ -295,6 +295,11 @@ public class Shared {
         return NumberFormat.getCurrencyInstance(getSavedLocale(context)).format(amount);
     }
 
+
+    public static double getSavedSpend(Context context) {
+        return get(context, Shared.SAVED_SPEND, 0.0f);
+    }
+
     /**
      * Minimum of the given values.
      *

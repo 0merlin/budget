@@ -43,6 +43,13 @@ public class Data extends SQLiteOpenHelper {
                 ")");
     }
 
+    public void resetDatabase() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TRANSACTIONS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_TABLE);
+        onCreate(db);
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
@@ -226,5 +233,25 @@ public class Data extends SQLiteOpenHelper {
         contentValues.put(CATEGORY_COLUMN_ICON, icon);
         contentValues.put(CATEGORY_COLUMN_NAME, name);
         getWritableDatabase().update(CATEGORY_TABLE, contentValues, CATEGORY_COLUMN_ID + " = ?", new String[]{String.valueOf(category.id)});
+    }
+
+    public void insertCategory(Category category) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CATEGORY_COLUMN_ICON, category.icon);
+        contentValues.put(CATEGORY_COLUMN_ID, category.id);
+        contentValues.put(CATEGORY_COLUMN_NAME, category.name);
+
+        getWritableDatabase().insert(CATEGORY_TABLE, null, contentValues);
+    }
+
+    public void insertTransaction(Transaction transaction) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TRANSACTIONS_COLUMN_ID, transaction.id);
+        contentValues.put(TRANSACTIONS_COLUMN_VALUE, transaction.value);
+        contentValues.put(TRANSACTIONS_COLUMN_CATEGORY, transaction.category.id );
+        contentValues.put(TRANSACTIONS_COLUMN_COMMENT, transaction.comment);
+        contentValues.put(TRANSACTIONS_COLUMN_DATE, transaction.timestamp);
+
+        getWritableDatabase().insert(TRANSACTIONS_TABLE, null, contentValues);
     }
 }

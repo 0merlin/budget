@@ -23,6 +23,7 @@
     <string name="transactions">Transactions</string>
     <string name="export">Export</string>
     <string name="backup">Backup</string>
+    <string name="restore_backup">Restore Backup</string>
     <string name="spent_widget">Spent: %s</string>
     <string name="manual_entry">Manual Entry</string>
 

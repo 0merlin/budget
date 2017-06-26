@@ -24,6 +24,10 @@
         android:title="@string/backup"
         app:showAsAction="never" />
     <item
+        android:id="@+id/restore"
+        android:title="@string/restore_backup"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/goto_categories"
         android:title="@string/manage_categories"
         app:showAsAction="never" />
