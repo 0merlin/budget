@@ -40,17 +40,6 @@
         <item name="android:textSize">24sp</item>
     </style>
 
-    <style name="Card" parent="CardView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="cardCornerRadius">2dp</item>
-        <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:layout_marginRight">8dp</item>
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
-        <item name="cardBackgroundColor">#FEFEFE</item>
-    </style>
-
 
     <style name="Linear">
         <item name="android:layout_width">match_parent</item>

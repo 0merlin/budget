@@ -2,7 +2,6 @@ package zz.merlin.budget;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,7 +46,7 @@ public class TransactionsActivity extends AppCompatActivity {
                                 transactions.addView(v);
                                 last = date;
                             }
-                            CardView ll = (CardView) getLayoutInflater().inflate(R.layout.transaction, transactions, false);
+                            LinearLayout ll = (LinearLayout) getLayoutInflater().inflate(R.layout.transaction, transactions, false);
                             ((ImageView) ll.findViewById(R.id.image)).setImageDrawable(getDrawable(Shared.icons[transaction.category.icon]));
                             ((TextView) ll.findViewById(R.id.date)).setText(Shared.time.format(transaction.date));
                             ((TextView) ll.findViewById(R.id.value)).setText(Shared.currencyFormat(TransactionsActivity.this, transaction.value));
