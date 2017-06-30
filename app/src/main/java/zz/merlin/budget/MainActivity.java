@@ -23,7 +23,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.actions.NoteIntents;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -61,20 +60,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = getIntent();
-        if (NoteIntents.ACTION_CREATE_NOTE.equals(intent.getAction())) {
-            String name = "";
-            String text = "";
-            if (intent.hasExtra(NoteIntents.EXTRA_NAME)) {
-                name = intent.getStringExtra(NoteIntents.EXTRA_NAME);
-            }
-            if (intent.hasExtra(NoteIntents.EXTRA_TEXT)) {
-                text = intent.getStringExtra(NoteIntents.EXTRA_TEXT);
-            }
-
-            Toast.makeText(this, name + " -> " + text, Toast.LENGTH_LONG).show();
-        }
-
 
         spent = (CurrencyEditText) findViewById(R.id.edit_currency);
         clear = (ImageButton) findViewById(R.id.btn_clear);
@@ -227,9 +212,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.goto_transactions:
                 startActivity(new Intent(this, TransactionsActivity.class));
-                return true;
-            case R.id.goto_manual:
-                startActivity(new Intent(this, AddPastActivity.class));
                 return true;
             case R.id.goto_categories:
                 startActivity(new Intent(this, CategoryActivity.class));

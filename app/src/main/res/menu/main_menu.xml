@@ -12,10 +12,6 @@
         android:title="@string/transactions"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/goto_manual"
-        android:title="@string/manual_entry"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/export"
         android:title="@string/export"
         app:showAsAction="never" />

@@ -92,4 +92,11 @@
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
+    <style name="Button" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">start</item>
+        <item name="android:layout_gravity">start</item>
+    </style>
+
 </resources>
