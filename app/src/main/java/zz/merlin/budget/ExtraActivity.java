@@ -2,10 +2,8 @@ package zz.merlin.budget;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.Menu;
@@ -58,17 +56,17 @@ public class ExtraActivity extends AppCompatActivity {
         extra = (EditText) findViewById(R.id.extra_content);
 
         ArrayList<Category> categories = new Data(this).getCategories();
-        for (Category category1: categories) {
+        for (Category category1 : categories) {
             if (category1.id == category) {
-                ((TextView)findViewById(R.id.spend_summary)).setText(String.format(Locale.ENGLISH, "Spending %s in %s", Shared.currencyFormat(this, spent), category1.name));
+                ((TextView) findViewById(R.id.spend_summary)).setText(String.format(Locale.ENGLISH, "Spending %s in %s", Shared.currencyFormat(this, spent), category1.name));
                 break;
             }
         }
 
         changeDate = (Button) findViewById(R.id.change_date);
         changeTime = (Button) findViewById(R.id.change_time);
-        changeDate.setText("Click to change date from: " + Shared.date.format(date));
-        changeTime.setText("Click to change time from: " + Shared.time.format(date));
+        changeDate.setText(Shared.date.format(date));
+        changeTime.setText(Shared.time.format(date));
 
         changeDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +76,7 @@ public class ExtraActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         now.set(year, month, dayOfMonth);
                         date = new Date(now.getTimeInMillis());
-                        changeDate.setText("Click to change date from: " + Shared.date.format(date));
+                        changeDate.setText(Shared.date.format(date));
                     }
                 }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -92,7 +90,7 @@ public class ExtraActivity extends AppCompatActivity {
                         now.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         now.set(Calendar.MINUTE, minute);
                         date = new Date(now.getTimeInMillis());
-                        changeTime.setText("Click to change time from: " + Shared.time.format(date));
+                        changeTime.setText(Shared.time.format(date));
                     }
                 }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE),
                         DateFormat.is24HourFormat(ExtraActivity.this)).show();

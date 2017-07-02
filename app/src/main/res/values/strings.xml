@@ -19,15 +19,13 @@
     <string name="number_00">00</string>
     <string name="next">Next</string>
     <string name="add_category">Add Category</string>
-    <string name="spend_history">Spend History</string>
+    <string name="transaction_summary">Transaction Summary</string>
     <string name="transactions">Transactions</string>
     <string name="export">Export</string>
     <string name="backup">Backup</string>
     <string name="restore_backup">Restore Backup</string>
     <string name="spent_widget">Spent: %s</string>
     <string name="manual_entry">Manual Entry</string>
-
-    <!-- Strings related to Settings -->
 
     <string name="category_icon">Category Icon</string>
     <string name="month_start_day">Month Start Day</string>

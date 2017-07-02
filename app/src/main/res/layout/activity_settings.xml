@@ -45,5 +45,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawSelectorOnTop="true" />
+
+        <TextView
+            style="@style/Text.Header.Center"
+            android:paddingTop="48dp"
+            android:text="Data Related" />
+
+        <Button
+            android:id="@+id/run_backup"
+            style="@style/Button"
+            android:text="@string/backup" />
+
+        <Button
+            android:id="@+id/run_restore"
+            style="@style/Button"
+            android:text="@string/restore_backup" />
+
+        <Button
+            android:id="@+id/run_export"
+            style="@style/Button"
+            android:text="@string/export" />
     </LinearLayout>
 </ScrollView>
